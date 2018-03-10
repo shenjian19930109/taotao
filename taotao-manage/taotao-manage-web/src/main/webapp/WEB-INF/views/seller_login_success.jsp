@@ -27,42 +27,10 @@
         <div id="head_nav">
             <div class="user">
                 卖家你好，<span class="name">
-                            ${cookie.username.value}
+                            ${sessionScope.username}
                         </span>！<a href="/logout">[退出]</a>
             </div>
-            <%--<%
-                // 获得当前路径以及"直接父路径"的所有Cookie对象,如果没有任何Cookie的话,则返回null
-                Cookie[] cookies = request.getCookies();
-
-                // 遍历数组,获得具体的Cookie
-                if(cookies == null) {
-                    System.out.print("没有Cookie信息");
-                } else {
-                    cookies
-                }
-            %>--%>
-
-
         </div>
-        <%--<div id="head_nav">
-            <a class="head_nav_a">大米网</a>
-            <span>|</span>
-            <a class="head_nav_a">MIUI</a>
-            <span>|</span>
-            <a class="head_nav_a">米聊</a>
-            <span>|</span>
-            <a class="head_nav_a">游戏</a>
-            <span>|</span>
-            <a class="head_nav_a">多看阅读</a>
-            <span>|</span>
-            <a class="head_nav_a">云服务</a>
-            <span>|</span>
-            <a class="head_nav_a">大米移动版</a>
-            <span>|</span>
-            <a class="head_nav_a">问题反馈</a>
-            <span>|</span>
-            <a class="head_nav_a" id="Select_Region_but">Select Region</a>
-        </div>--%>
         <div id="head_right">
             <div id="head_role">
 
@@ -88,7 +56,7 @@
     <div class="m-tab m-tab-fw m-tab-simple f-cb">
         <h2>内容发布</h2>
     </div>
-    <div class="n-public">
+    <%--<div class="n-public">
         <form class="m-form m-form-ht" id="form" method="post" action="/publicSubmit" onsubmit="return false;" autocomplete="off">
             <div class="fmitem">
                 <label class="fmlab">标题：</label>
@@ -136,7 +104,7 @@
                     <button type="submit" class="u-btn u-btn-primary u-btn-lg">发 布</button>
                 </div>
             </div>
-        </form>
+        </form>--%>
         <span class="imgpre"><img src="" alt="" id="imgpre"></span>
     </div>
 </div>

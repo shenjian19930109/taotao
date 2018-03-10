@@ -17,60 +17,41 @@
     <link rel="stylesheet" type="text/css" href="../../css/me.css">
     <link rel="stylesheet" href="../../css/xiaomi.css"/>
     <!--js-->
+    <script type="text/javascript" src="/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="/js/global.js"></script>
     <script type="text/javascript" src="/js/public.js"></script>
 
 </head>
+<script type="text/javascript">
+    function radio_show(){
+        var pic=document.getElementsByName("pic");
+        var div=document.getElementById("c").getElementsByTagName("div");
+        for(i=0;i<div.length;i++){
+            if(pic[i].checked){
+                div[i].style.display="block";
+            }
+            else{
+                div[i].style.display="none";
+            }
+        }
+    }
+</script>
 <body>
 <div class="head_box">
     <div id="head_wrap">
         <div id="head_nav">
             <div class="user">
                 卖家你好，<span class="name">
-                            ${cookie.username.value}
+                            ${sessionScope.username}
                         </span>！<a href="/logout">[退出]</a>
             </div>
-            <%--<%
-                // 获得当前路径以及"直接父路径"的所有Cookie对象,如果没有任何Cookie的话,则返回null
-                Cookie[] cookies = request.getCookies();
-
-                // 遍历数组,获得具体的Cookie
-                if(cookies == null) {
-                    System.out.print("没有Cookie信息");
-                } else {
-                    cookies
-                }
-            %>--%>
-
-
         </div>
-        <%--<div id="head_nav">
-            <a class="head_nav_a">大米网</a>
-            <span>|</span>
-            <a class="head_nav_a">MIUI</a>
-            <span>|</span>
-            <a class="head_nav_a">米聊</a>
-            <span>|</span>
-            <a class="head_nav_a">游戏</a>
-            <span>|</span>
-            <a class="head_nav_a">多看阅读</a>
-            <span>|</span>
-            <a class="head_nav_a">云服务</a>
-            <span>|</span>
-            <a class="head_nav_a">大米移动版</a>
-            <span>|</span>
-            <a class="head_nav_a">问题反馈</a>
-            <span>|</span>
-            <a class="head_nav_a" id="Select_Region_but">Select Region</a>
-        </div>--%>
         <div id="head_right">
             <div id="head_role">
-
-
             </div>
             <div id="head_landing">
                 <!--${pageContext.request.contextPath}-->
-                <a class="head_nav_a" href="${pageContext.request.contextPath}/rest/seller/release">发布</a>
+                <a class="head_nav_a" href="${pageContext.request.contextPath}/rest/seller/toReleasePage">发布</a>
                 <span>|</span>
                 <a class="head_nav_a" href="${pageContext.request.contextPath}/index.jsp">首页</a>
             </div>
@@ -89,7 +70,7 @@
         <h2>内容发布</h2>
     </div>
     <div class="n-public">
-        <form class="m-form m-form-ht" id="form" method="post" action="/publicSubmit" onsubmit="return false;" autocomplete="off" enctype="multipart/-data">
+        <form class="m-form m-form-ht" id="form" method="post" action="/publicSubmit" onsubmit="return false;" autocomplete="off">
             <div class="fmitem">
                 <label class="fmlab">标题：</label>
                 <div class="fmipt">
@@ -105,11 +86,20 @@
             <div class="fmitem">
                 <label class="fmlab">图片：</label>
                 <div class="fmipt" id="uploadType">
+                    <input name="pic" type="radio" value="url" checked onclick="radio_show();"/> 图片地址
+                    <input name="pic" type="radio" value="file" onclick="radio_show();"/> 本地上传
+                </div>
+            </div>
+<%--
+            <div class="fmitem">
+                <label class="fmlab">图片：</label>
+                <div class="fmipt" id="uploadType">
                     <input name="pic" type="radio" value="url" checked /> 图片地址
                     <input name="pic" type="radio" value="file" /> 本地上传
                 </div>
             </div>
-            <div class="fmitem">
+--%>
+            <div class="fmitem" id="c">
                 <label class="fmlab"></label>
                 <div class="fmipt" id="urlUpload">
                     <input class="u-ipt ipt"  name="image" placeholder="图片地址"/>

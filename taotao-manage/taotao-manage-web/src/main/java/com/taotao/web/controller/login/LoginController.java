@@ -8,9 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -18,8 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by apple on 18/3/1.
  */
-@RequestMapping("/login")
 @Controller
+@RequestMapping("/login")
+@SessionAttributes("username")
 public class LoginController {
 
     // 日志工具
@@ -39,13 +42,13 @@ public class LoginController {
      * @return 返回登录结果页.成功,则跳转到首页.失败,则返回登录页.
      * */
     @RequestMapping(value = "toLoginResultPage", method = RequestMethod.GET)
-    public String toLoginResultPage(@ModelAttribute("loginForm") UserLoginBO userLoginBO, HttpServletResponse response) {
+    public String toLoginResultPage(@ModelAttribute("loginForm") UserLoginBO userLoginBO, ModelMap model) {
 
         LoginStatusEnum loginStatusEnum = loginService.getUserLoginInDB(userLoginBO);
 
         if (loginStatusEnum.equals(LoginStatusEnum.SUCCESS)) {
 
-            response.addCookie(new Cookie("username", loginStatusEnum.getUserName()));
+            model.addAttribute("username", loginStatusEnum.getUserName());
             if (loginStatusEnum.getRoleType() == RoleType.BUYER){
                 return "buyer_login_success";
             }
