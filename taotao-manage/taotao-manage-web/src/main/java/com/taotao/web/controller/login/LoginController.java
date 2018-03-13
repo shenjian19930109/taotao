@@ -31,6 +31,10 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
+    /**
+     * 跳转到登录界面
+     * @return 跳转到登录界面.
+     * */
     @RequestMapping(value = "toLoginPage", method = RequestMethod.GET)
     public String toLoginPage() {
         return "login";
@@ -47,15 +51,13 @@ public class LoginController {
         LoginStatusEnum loginStatusEnum = loginService.getUserLoginInDB(userLoginBO);
 
         if (loginStatusEnum.equals(LoginStatusEnum.SUCCESS)) {
-
+            // 通过@SessionAttributes("username")注解声明了凡是放入ModelMap中的key为username的属性,均放入session中.
             model.addAttribute("username", loginStatusEnum.getUserName());
             if (loginStatusEnum.getRoleType() == RoleType.BUYER){
                 return "buyer_login_success";
             }
             return "seller_login_success";
-        }else {
-            return "login_fail";
         }
+        return "login_fail";
     }
-
 }

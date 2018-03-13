@@ -1,15 +1,15 @@
 <%--
   Created by IntelliJ IDEA.
   User: apple
-  Date: 18/3/4
-  Time: 下午10:46
+  Date: 18/3/13
+  Time: 下午1:00
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>发布页面</title>
+    <title>编辑产品</title>
     <!--基础样式-->
     <link rel="stylesheet" type="text/css" href="../../css/iconfont.css">
     <!--页面样式-->
@@ -71,14 +71,15 @@
     }
 
 </script>
+
 <body>
 <div class="head_box">
     <div id="head_wrap">
         <div id="head_nav">
             <div class="user">
                 卖家你好，<span class="name">
-                            ${sessionScope.username}
-                        </span>！<a href="/logout">[退出]</a>
+                ${sessionScope.username}
+            </span>！<a href="/logout">[退出]</a>
             </div>
         </div>
         <div id="head_right">
@@ -90,26 +91,20 @@
                 <span>|</span>
                 <a class="head_nav_a" href="${pageContext.request.contextPath}/index.jsp">首页</a>
             </div>
-            <%--<div id="head_car">
-                <a class="head_car_text">购物车（0）</a>
-                <div id="car_content" style="height: 0px;width:0px ;background-color: #edffc6;z-index: 999">
-                    <a class="car_text"></a>
-                </div>
-            </div>--%>
         </div>
     </div>
 </div>
 
 <div class="g-doc">
     <div class="m-tab m-tab-fw m-tab-simple f-cb">
-        <h2>内容发布</h2>
+        <h2>内容编辑</h2>
     </div>
     <div class="n-public">
-        <form class="m-form m-form-ht" id="form" method="post" action="${pageContext.request.contextPath}/rest/seller/publicSubmit" ><%--onsubmit="return false;" autocomplete="off"--%>
+        <form class="m-form m-form-ht" id="form" method="post" action="${pageContext.request.contextPath}/rest/seller/editSubmit" ><%--onsubmit="return false;" autocomplete="off"--%>
             <div class="fmitem">
                 <label class="fmlab">标题：</label>
                 <div class="fmipt">
-                    <input class="u-ipt ipt" name="title" autofocus placeholder="2-80字符"/>
+                    <input class="u-ipt ipt" name="title" autofocus placeholder="2-80字符" value="${sessionScope.title}"/>
                 </div>
             </div>
             <div class="fmitem">
@@ -128,7 +123,7 @@
             <div class="fmitem" id="c">
                 <label class="fmlab"></label>
                 <div class="fmipt" id="urlUpload">
-                    <input class="u-ipt ipt"  name="image" id="imgAddr" placeholder="图片地址" value="" onchange="display_img();"/>
+                    <input class="u-ipt ipt"  name="image" id="imgAddr" placeholder="图片地址" value="${sessionScope.file}" onchange="display_img();"/>
                 </div>
                 <div class="fmipt" id="fileUpload"  style="display:none">
                     <input class="u-ipt ipt" name="file" type="file" id="file" onchange="upload_img();"/>
@@ -150,13 +145,14 @@
             </div>
             <div class="fmitem fmitem-nolab fmitem-btn">
                 <div class="fmipt">
-                    <input type="submit" class="u-btn u-btn-primary u-btn-lg" />
+                    <input type="submit" class="u-btn u-btn-primary u-btn-lg" value="保存"/>
                 </div>
             </div>
         </form>
         <span class="imgpre"><img src="" alt="" id="avatarShow" width="100px" height="100px"></span>
     </div>
 </div>
+
 
 </body>
 </html>

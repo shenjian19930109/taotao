@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.taotao.mapper.UserLoginMapper">
-  <resultMap id="BaseResultMap" type="com.taotao.po.UserLogin">
+<mapper namespace="com.taotao.mapper.ProductMapper">
+  <resultMap id="BaseResultMap" type="com.taotao.po.Product">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="role_type" jdbcType="TINYINT" property="roleType" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
+    <result column="pic" jdbcType="VARCHAR" property="pic" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="file" jdbcType="VARCHAR" property="file" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="detail" jdbcType="VARCHAR" property="detail" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
@@ -69,15 +74,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, username, password, role_type, status, create_time, modify_time
+    id, title, summary, pic, image, file, avatar, detail, price, status, create_time, 
+    modify_time
   </sql>
-  <select id="selectByExample" parameterType="com.taotao.po.UserLoginExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.taotao.po.ProductExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_user_login
+    from tb_product
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -86,43 +92,60 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
-    from tb_user_login
+    from tb_product
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from tb_user_login
+    delete from tb_product
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.taotao.po.UserLoginExample">
-    delete from tb_user_login
+  <delete id="deleteByExample" parameterType="com.taotao.po.ProductExample">
+    delete from tb_product
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.taotao.po.UserLogin">
-    insert into tb_user_login (id, username, password,
-      role_type, status, create_time,
-      modify_time)
-    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
-      #{roleType,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP},
-      #{modifyTime,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.taotao.po.Product">
+    insert into tb_product (id, title, summary, 
+      pic, image, file, avatar, 
+      detail, price, status, 
+      create_time, modify_time)
+    values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, 
+      #{pic,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{file,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, 
+      #{detail,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{status,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.taotao.po.UserLogin">
-    insert into tb_user_login
+  <insert id="insertSelective" parameterType="com.taotao.po.Product">
+    insert into tb_product
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="username != null">
-        username,
+      <if test="title != null">
+        title,
       </if>
-      <if test="password != null">
-        password,
+      <if test="summary != null">
+        summary,
       </if>
-      <if test="roleType != null">
-        role_type,
+      <if test="pic != null">
+        pic,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+      <if test="file != null">
+        file,
+      </if>
+      <if test="avatar != null">
+        avatar,
+      </if>
+      <if test="detail != null">
+        detail,
+      </if>
+      <if test="price != null">
+        price,
       </if>
       <if test="status != null">
         status,
@@ -138,14 +161,29 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="username != null">
-        #{username,jdbcType=VARCHAR},
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
       </if>
-      <if test="password != null">
-        #{password,jdbcType=VARCHAR},
+      <if test="summary != null">
+        #{summary,jdbcType=VARCHAR},
       </if>
-      <if test="roleType != null">
-        #{roleType,jdbcType=TINYINT},
+      <if test="pic != null">
+        #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="file != null">
+        #{file,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null">
+        #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
@@ -158,26 +196,41 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.taotao.po.UserLoginExample" resultType="java.lang.Long">
-    select count(*) from tb_user_login
+  <select id="countByExample" parameterType="com.taotao.po.ProductExample" resultType="java.lang.Long">
+    select count(*) from tb_product
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update tb_user_login
+    update tb_product
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.username != null">
-        username = #{record.username,jdbcType=VARCHAR},
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=VARCHAR},
       </if>
-      <if test="record.password != null">
-        password = #{record.password,jdbcType=VARCHAR},
+      <if test="record.summary != null">
+        summary = #{record.summary,jdbcType=VARCHAR},
       </if>
-      <if test="record.roleType != null">
-        role_type = #{record.roleType,jdbcType=TINYINT},
+      <if test="record.pic != null">
+        pic = #{record.pic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.image != null">
+        image = #{record.image,jdbcType=VARCHAR},
+      </if>
+      <if test="record.file != null">
+        file = #{record.file,jdbcType=VARCHAR},
+      </if>
+      <if test="record.avatar != null">
+        avatar = #{record.avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="record.detail != null">
+        detail = #{record.detail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=DECIMAL},
       </if>
       <if test="record.status != null">
         status = #{record.status,jdbcType=TINYINT},
@@ -194,11 +247,16 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update tb_user_login
+    update tb_product
     set id = #{record.id,jdbcType=BIGINT},
-      username = #{record.username,jdbcType=VARCHAR},
-      password = #{record.password,jdbcType=VARCHAR},
-      role_type = #{record.roleType,jdbcType=TINYINT},
+      title = #{record.title,jdbcType=VARCHAR},
+      summary = #{record.summary,jdbcType=VARCHAR},
+      pic = #{record.pic,jdbcType=VARCHAR},
+      image = #{record.image,jdbcType=VARCHAR},
+      file = #{record.file,jdbcType=VARCHAR},
+      avatar = #{record.avatar,jdbcType=VARCHAR},
+      detail = #{record.detail,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL},
       status = #{record.status,jdbcType=TINYINT},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       modify_time = #{record.modifyTime,jdbcType=TIMESTAMP}
@@ -206,17 +264,32 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.taotao.po.UserLogin">
-    update tb_user_login
+  <update id="updateByPrimaryKeySelective" parameterType="com.taotao.po.Product">
+    update tb_product
     <set>
-      <if test="username != null">
-        username = #{username,jdbcType=VARCHAR},
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
       </if>
-      <if test="password != null">
-        password = #{password,jdbcType=VARCHAR},
+      <if test="summary != null">
+        summary = #{summary,jdbcType=VARCHAR},
       </if>
-      <if test="roleType != null">
-        role_type = #{roleType,jdbcType=TINYINT},
+      <if test="pic != null">
+        pic = #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="file != null">
+        file = #{file,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null">
+        detail = #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=TINYINT},
@@ -230,11 +303,16 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.taotao.po.UserLogin">
-    update tb_user_login
-    set username = #{username,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      role_type = #{roleType,jdbcType=TINYINT},
+  <update id="updateByPrimaryKey" parameterType="com.taotao.po.Product">
+    update tb_product
+    set title = #{title,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      pic = #{pic,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR},
+      file = #{file,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      detail = #{detail,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
       status = #{status,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       modify_time = #{modifyTime,jdbcType=TIMESTAMP}
