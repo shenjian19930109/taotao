@@ -1,12 +1,16 @@
 package com.taotao.service.seller.impl;
 
 import com.taotao.mapper.ProductMapper;
+import com.taotao.mapper.SellerProductMapper;
 import com.taotao.po.Product;
 import com.taotao.po.ProductExample;
+import com.taotao.po.SellerProduct;
+import com.taotao.po.SellerProductExample;
 import com.taotao.service.login.impl.LoginServiceImpl;
 import com.taotao.service.seller.SellerService;
 import com.taotao.utils.OrikaMapperUtil;
 import com.taotao.vo.ProductVO;
+import com.taotao.vo.SellerProductVO;
 import ma.glasnost.orika.MapperFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.slf4j.Logger;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by apple on 18/3/11.
@@ -29,6 +34,9 @@ public class SellerServiceImpl implements SellerService {
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Autowired
+    private SellerProductMapper sellerProductMapper;
 
     /**
      * 向数据库添加产品,并返回id
@@ -64,9 +72,6 @@ public class SellerServiceImpl implements SellerService {
         int effLine = productMapper.updateByPrimaryKeySelective(product);
         return effLine;
     }
-
-
-
 
     /*@Override
     public long addProductIntoDB(ProductVO productVO) {

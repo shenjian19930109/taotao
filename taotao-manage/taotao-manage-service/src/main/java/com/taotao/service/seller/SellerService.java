@@ -1,6 +1,9 @@
 package com.taotao.service.seller;
 
 import com.taotao.vo.ProductVO;
+import com.taotao.vo.SellerProductVO;
+
+import java.util.List;
 
 /**
  * Created by apple on 18/3/11.
@@ -15,4 +18,5 @@ public interface SellerService {
     long addProductIntoDB(ProductVO productVO);
 
     int updateProductById(ProductVO productVO, long id);
+
 }

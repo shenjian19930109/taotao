@@ -2,9 +2,11 @@ package com.taotao.service.login.impl;
 
 import com.taotao.bo.UserLoginBO;
 import com.taotao.mapper.UserLoginMapper;
+import com.taotao.po.ProductExample;
 import com.taotao.po.UserLogin;
 import com.taotao.po.UserLoginExample;
 import com.taotao.service.login.LoginService;
+import com.taotao.vo.UserLoginVO;
 import com.taotao.web.status.LoginStatusEnum;
 import com.taotao.web.status.RoleType;
 import org.slf4j.Logger;
@@ -59,6 +61,21 @@ public class LoginServiceImpl implements LoginService {
         }
     }
 
+    @Override
+    public long getIdByUsername(String username) {
+
+        UserLoginExample userLoginExample = new UserLoginExample();
+        UserLoginExample.Criteria criteria = userLoginExample.createCriteria();
+        criteria.andUsernameEqualTo(username);
+
+        List<UserLogin> userLogins = userLoginMapper.selectByExample(userLoginExample);
+        if (userLogins.size() == 0) {
+            throw new RuntimeException("根据用户名查询用户登录表失败,无此用户 : " + username);
+        }else {
+            return userLogins.get(0).getId();
+        }
+    }
+
     /**
      * 校验用户登录参数
      * @param userLoginBO 用户登录BO
@@ -86,5 +103,22 @@ public class LoginServiceImpl implements LoginService {
             loginStatusEnum.setRoleType(RoleType.SELLER);
         }
         return loginStatusEnum;
+    }
+
+
+    @Override
+    public long getUserIdByUsername(String username) {
+
+        UserLoginExample userLoginExample = new UserLoginExample();
+
+        userLoginExample.createCriteria()
+                .andUsernameEqualTo(username);
+
+        List<UserLogin> userLogins = userLoginMapper.selectByExample(userLoginExample);
+
+        if (userLogins.size() > 0) {
+            return userLogins.get(0).getId();
+        }
+        throw new RuntimeException("根据用户名获取用户id失败 : " + username);
     }
 }

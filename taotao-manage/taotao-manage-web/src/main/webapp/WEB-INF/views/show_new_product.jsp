@@ -18,7 +18,6 @@
     <script type="text/javascript" src="/js/pageShow.js"></script>
 </head>
 <script>
-    function
 
 
 
@@ -30,7 +29,7 @@
             <div class="user">
                 卖家你好，<span class="name">
                 ${sessionScope.username}
-            </span>！<a href="/logout">[退出]</a>
+            </span>！<a href="${pageContext.request.contextPath}/rest/index/logout">[退出]</a>
             </div>
         </div>
         <div id="head_right">

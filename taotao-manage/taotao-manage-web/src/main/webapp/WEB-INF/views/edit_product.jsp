@@ -79,7 +79,7 @@
             <div class="user">
                 卖家你好，<span class="name">
                 ${sessionScope.username}
-            </span>！<a href="/logout">[退出]</a>
+            </span>！<a href="${pageContext.request.contextPath}/rest/index/logout">[退出]</a>
             </div>
         </div>
         <div id="head_right">
@@ -100,17 +100,17 @@
         <h2>内容编辑</h2>
     </div>
     <div class="n-public">
-        <form class="m-form m-form-ht" id="form" method="post" action="${pageContext.request.contextPath}/rest/seller/editSubmit" ><%--onsubmit="return false;" autocomplete="off"--%>
+        <form class="m-form m-form-ht" id="form" method="post" action="${pageContext.request.contextPath}/rest/seller/editSubmit?productId=${sessionScope.productId}" ><%--onsubmit="return false;" autocomplete="off"--%>
             <div class="fmitem">
                 <label class="fmlab">标题：</label>
                 <div class="fmipt">
-                    <input class="u-ipt ipt" name="title" autofocus placeholder="2-80字符" value="${sessionScope.title}"/>
+                    <input class="u-ipt ipt" name="title" value="${sessionScope.productVO.title}"/>
                 </div>
             </div>
             <div class="fmitem">
                 <label class="fmlab">摘要：</label>
                 <div class="fmipt">
-                    <input class="u-ipt ipt" name="summary" placeholder="2-140字符"/>
+                    <input class="u-ipt ipt" name="summary" value="${sessionScope.productVO.summary}"/>
                 </div>
             </div>
             <div class="fmitem">
@@ -123,7 +123,7 @@
             <div class="fmitem" id="c">
                 <label class="fmlab"></label>
                 <div class="fmipt" id="urlUpload">
-                    <input class="u-ipt ipt"  name="image" id="imgAddr" placeholder="图片地址" value="${sessionScope.file}" onchange="display_img();"/>
+                    <input class="u-ipt ipt"  name="image" id="imgAddr" value="${sessionScope.productVO.file}" onchange="display_img();"/>
                 </div>
                 <div class="fmipt" id="fileUpload"  style="display:none">
                     <input class="u-ipt ipt" name="file" type="file" id="file" onchange="upload_img();"/>
@@ -134,13 +134,13 @@
             <div class="fmitem">
                 <label class="fmlab">正文：</label>
                 <div class="fmipt">
-                    <textarea class="u-ipt" name="detail" rows="10" placeholder="2-1000个字符"></textarea>
+                    <textarea class="u-ipt" name="detail" rows="10" >${sessionScope.productVO.detail}</textarea>
                 </div>
             </div>
             <div class="fmitem">
                 <label class="fmlab">价格：</label>
                 <div class="fmipt">
-                    <input class="u-ipt price" name="price"/>元
+                    <input class="u-ipt price" name="price"  value="${sessionScope.productVO.price}"/>元
                 </div>
             </div>
             <div class="fmitem fmitem-nolab fmitem-btn">
@@ -149,7 +149,7 @@
                 </div>
             </div>
         </form>
-        <span class="imgpre"><img src="" alt="" id="avatarShow" width="100px" height="100px"></span>
+        <span class="imgpre"><img src="${sessionScope.productVO.file}" alt="" id="avatarShow" width="100px" height="100px"></span>
     </div>
 </div>
 

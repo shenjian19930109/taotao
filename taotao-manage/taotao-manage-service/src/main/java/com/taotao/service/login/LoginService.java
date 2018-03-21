@@ -1,6 +1,7 @@
 package com.taotao.service.login;
 
 import com.taotao.bo.UserLoginBO;
+import com.taotao.vo.UserLoginVO;
 import com.taotao.web.status.LoginStatusEnum;
 
 /**
@@ -15,4 +16,8 @@ public interface LoginService {
      * @return 登录状态,成功或失败
      * */
     LoginStatusEnum getUserLoginInDB(UserLoginBO userLoginBO);
+
+    long getIdByUsername(String username);
+
+    long getUserIdByUsername(String username);
 }

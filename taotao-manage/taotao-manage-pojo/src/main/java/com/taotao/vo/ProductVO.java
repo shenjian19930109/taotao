@@ -7,6 +7,7 @@ import java.math.BigDecimal;
  */
 public class ProductVO {
 
+    private long id;
     // 主题
     private String title;
     // 摘要
@@ -27,7 +28,8 @@ public class ProductVO {
     public ProductVO() {
     }
 
-    public ProductVO(String title, String summary, String pic, String image, String file, String avatar, String detail, BigDecimal price) {
+    public ProductVO(long id, String title, String summary, String pic, String image, String file, String avatar, String detail, BigDecimal price) {
+        this.id = id;
         this.title = title;
         this.summary = summary;
         this.pic = pic;
@@ -36,6 +38,14 @@ public class ProductVO {
         this.avatar = avatar;
         this.detail = detail;
         this.price = price;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -105,7 +115,8 @@ public class ProductVO {
     @Override
     public String toString() {
         return "ProductVO{" +
-                "title='" + title + '\'' +
+                "id=" + id +
+                ", title='" + title + '\'' +
                 ", summary='" + summary + '\'' +
                 ", pic='" + pic + '\'' +
                 ", image='" + image + '\'' +

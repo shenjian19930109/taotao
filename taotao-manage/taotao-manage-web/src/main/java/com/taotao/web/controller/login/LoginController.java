@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 @RequestMapping("/login")
-@SessionAttributes("username")
+@SessionAttributes(value={"username","roleType"})
 public class LoginController {
 
     // 日志工具
@@ -53,6 +53,7 @@ public class LoginController {
         if (loginStatusEnum.equals(LoginStatusEnum.SUCCESS)) {
             // 通过@SessionAttributes("username")注解声明了凡是放入ModelMap中的key为username的属性,均放入session中.
             model.addAttribute("username", loginStatusEnum.getUserName());
+            model.addAttribute("roleType", loginStatusEnum.getRoleType());
             if (loginStatusEnum.getRoleType() == RoleType.BUYER){
                 return "buyer_login_success";
             }

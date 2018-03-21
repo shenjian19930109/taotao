@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: apple
@@ -11,16 +12,95 @@
     <meta charset="UTF-8">
     <title></title>
     <!--基础样式-->
-    <link rel="stylesheet" type="text/css" href="../../css/iconfont.css">
+    <link rel="stylesheet" type="text/css" href="/css/iconfont.css">
     <!--页面样式-->
     <link rel="stylesheet" href="/css/style.css"/>
-    <link rel="stylesheet" type="text/css" href="../../css/me.css">
-    <link rel="stylesheet" href="../../css/xiaomi.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/me.css">
+    <link rel="stylesheet" href="/css/xiaomi.css"/>
     <!--js-->
-    <script type="text/javascript" src="/js/global.js"></script>
-    <script type="text/javascript" src="/js/public.js"></script>
+    <script type="text/javascript" src="/js/jquery-2.1.4.min.js"></script>
+    <script src="/js/jquery.animate-colors-min.js"></script>
+    <script type="text/javascript" src="/js/xiaomi.js"></script>
+    <script type="text/javascript" src="/js/pagenation.js"></script>
 
 </head>
+
+<script>
+    $(document).ready(function(){
+        data=$.ajax({
+            type: "POST",
+            url:"${pageContext.request.contextPath}/rest/seller/listAllSoldProducts?username=${sessionScope.username}",
+            async:false,
+            dataType: "json",
+        });
+        data2 = data.responseText;
+        var data2 = JSON.parse(data2);
+        data2.forEach(function(e){
+            $("#plist").append("<li id=\"p-" + e.id + "\">" +
+                    "<a href=\"${pageContext.request.contextPath}/rest/seller/showSellerOneProduct?id=" + e.id + "\" class=\"link\">" +
+                    "<div class=\"img\"><img src=" + e.file + " alt=\"" + e.title + "\"></div>" +
+                    "<h3>" + e.title + "</h3>" +
+                    "<div class=\"price\">" +
+                    "<span class=\"v-unit\">¥</span>" +
+                    "<span class=\"v-value\">" + e.price + "</span>" +
+                    "</div>" +
+                        <%--<c:if test="${e.sold==false}"> +
+                            "<span class=\"had\"><b>已售出</b></span>" +
+                        </c:if> +--%>
+                        "<span class=\"had\"><b>" + e.sellStatus + "</b></span>" +
+                    "</a>" +
+                    /*"<span class=\"u-btn u-btn-normal u-btn-xs del\" data-del=" + e.id + ">删除</span>" +*/
+                    "</li>");
+
+        })
+    }
+);
+    $(document).ready(function(){
+        data=$.ajax({
+            type: "POST",
+            url:"${pageContext.request.contextPath}/rest/seller/listAllUnSoldProducts?username=${sessionScope.username}",
+            async:false,
+            dataType: "json",
+        });
+        data2 = data.responseText;
+        var data2 = JSON.parse(data2);
+        data2.forEach(function(e){
+            $("#plist").append("<li id=\"p-" + e.id + "\">" +
+                    "<a href=\"${pageContext.request.contextPath}/rest/seller/showSellerOneProduct?id=" + e.id + "\" class=\"link\">" +
+                    "<div class=\"img\"><img src=" + e.file + " alt=\"" + e.title + "\"></div>" +
+                    "<h3>" + e.title + "</h3>" +
+                    "<div class=\"price\">" +
+                    "<span class=\"v-unit\">¥</span>" +
+                    "<span class=\"v-value\">" + e.price + "</span>" +
+                    "</div>" +
+                        <%--<c:if test="${e.sold==false}"> +
+                            "<span class=\"had\"><b>已售出</b></span>" +
+                        </c:if> +--%>
+                        "<span class=\"had\"><b>" + e.sellStatus + "</b></span>" +
+                    "</a>" +
+                    /*"<span class=\"u-btn u-btn-normal u-btn-xs del\" data-del=" + e.id + " onclick=deleteSellerProduct(" + e.id + ");>删除</span>" +*/
+                    "<span id='span' class=\"u-btn u-btn-normal u-btn-xs del\" data-del=" + e.id + ">删除</span>" +
+                    /*"<a class=\"u-btn u-btn-normal u-btn-xs del\" data-del=" + e.id + " href=\"${pageContext.request.contextPath}/rest/seller/deleteSellerProduct?id=" + e.id + ">删除</a>" +*/
+
+
+                    /*"<a class=\"u-btn u-btn-normal u-btn-xs del\" data-del=" + e.id + " href=\"${pageContext.request.contextPath}/rest/seller/deleteSellerProduct?id=" + e.id + ">" +
+                    "<span >删除</span>" +*/
+                    "</a>" +
+                    "</li>");
+
+        })
+    }
+);
+
+    $ (function ()
+        {
+            $ ('#span').click (function ()
+            {
+                $(window.location).prop('href', '${pageContext.request.contextPath}/rest/seller/deleteSellerProduct?id=' + $ ('#span').attr('data-del'));
+            })
+        })
+
+</script>
 <body>
 <div class="head_box">
     <div id="head_wrap">
@@ -28,7 +108,7 @@
             <div class="user">
                 卖家你好，<span class="name">
                             ${sessionScope.username}
-                        </span>！<a href="/logout">[退出]</a>
+                        </span>！<a href="${pageContext.request.contextPath}/rest/index/logout">[退出]</a>
             </div>
         </div>
         <div id="head_right">
@@ -40,74 +120,114 @@
                 <!--${pageContext.request.contextPath}-->
                 <a class="head_nav_a" href="${pageContext.request.contextPath}/rest/seller/toReleasePage">发布</a>
                 <span>|</span>
-                <a class="head_nav_a" href="${pageContext.request.contextPath}/index.jsp">首页</a>
+                <a class="head_nav_a" href="${pageContext.request.contextPath}/rest/seller/toSellerAllProductPage">首页</a>
             </div>
-            <%--<div id="head_car">
-                <a class="head_car_text">购物车（0）</a>
-                <div id="car_content" style="height: 0px;width:0px ;background-color: #edffc6;z-index: 999">
-                    <a class="car_text"></a>
-                </div>
-            </div>--%>
+        </div>
+    </div>
+</div>
+<div id="main_head_box">
+    <div id="menu_wrap">
+        <div id="menu_logo">
+            <img src="../../img/xiaomi_logo.png">
+        </div>
+
+        <div id="find_wrap">
+            <div id="find_bar">
+                <input type="text" id="find_input">
+            </div>
+            <div id="find_but">GO</div>
         </div>
     </div>
 </div>
 
 <div class="g-doc">
     <div class="m-tab m-tab-fw m-tab-simple f-cb">
-        <h2>内容发布</h2>
+        <div class="tab">
+            <ul>
+                <li class="z-sel"><a href="${pageContext.request.contextPath}/rest/seller/toSellerAllProductPage">所有内容</a></li>
+                <li><a href="${pageContext.request.contextPath}/rest/seller/toSellerUnSoldProductPage">未售出的内容</a></li>
+            </ul>
+        </div>
     </div>
-    <%--<div class="n-public">
-        <form class="m-form m-form-ht" id="form" method="post" action="/publicSubmit" onsubmit="return false;" autocomplete="off">
-            <div class="fmitem">
-                <label class="fmlab">标题：</label>
-                <div class="fmipt">
-                    <input class="u-ipt ipt" name="title" autofocus placeholder="2-80字符"/>
-                </div>
-            </div>
-            <div class="fmitem">
-                <label class="fmlab">摘要：</label>
-                <div class="fmipt">
-                    <input class="u-ipt ipt" name="summary" placeholder="2-140字符"/>
-                </div>
-            </div>
-            <div class="fmitem">
-                <label class="fmlab">图片：</label>
-                <div class="fmipt" id="uploadType">
-                    <input name="pic" type="radio" value="url" checked /> 图片地址
-                    <input name="pic" type="radio" value="file" /> 本地上传
-                </div>
-            </div>
-            <div class="fmitem">
-                <label class="fmlab"></label>
-                <div class="fmipt" id="urlUpload">
-                    <input class="u-ipt ipt"  name="image" placeholder="图片地址"/>
-                </div>
-                <div class="fmipt" id="fileUpload"  style="display:none">
-                    <input class="u-ipt ipt" name="file" type="file" id="fileUp"/>
-                    <button class="u-btn u-btn-primary" id="upload">上传</button>
-                </div>
-            </div>
-            <div class="fmitem">
-                <label class="fmlab">正文：</label>
-                <div class="fmipt">
-                    <textarea class="u-ipt" name="detail" rows="10" placeholder="2-1000个字符"></textarea>
-                </div>
-            </div>
-            <div class="fmitem">
-                <label class="fmlab">价格：</label>
-                <div class="fmipt">
-                    <input class="u-ipt price" name="price"/>元
-                </div>
-            </div>
-            <div class="fmitem fmitem-nolab fmitem-btn">
-                <div class="fmipt">
-                    <button type="submit" class="u-btn u-btn-primary u-btn-lg">发 布</button>
-                </div>
-            </div>
-        </form>--%>
-        <span class="imgpre"><img src="" alt="" id="imgpre"></span>
+    <div class="n-plist">
+        <ul class="f-cb" id="plist">
+            <%--<li id="p-1">
+                <a href="./show.html" class="link">
+                    <div class="img"><img src="http://nec.netease.com/img/s/1.jpg" alt=""></div>
+                    <h3>内容</h3>
+                    <div class="price"><span class="v-unit">¥</span><span class="v-value">123.9</span></div>
+                    <span class="had"><b>已售出</b></span>
+                </a>
+            </li>
+            <li id="p-2">
+                <a href="./show.html" class="link">
+                    <div class="img"><img src="http://nec.netease.com/img/s/1.jpg" alt=""></div>
+                    <h3>内容</h3>
+                    <div class="price"><span class="v-unit">¥</span><span class="v-value">123.9</span></div>
+                    <span class="had"><b>已购买</b></span>
+                </a>
+            </li>
+            <li id="p-3">
+                <a href="./show.html" class="link">
+                    <div class="img"><img src="http://nec.netease.com/img/s/1.jpg" alt=""></div>
+                    <h3>内容</h3>
+                    <div class="price"><span class="v-unit">¥</span><span class="v-value">123.9</span></div>
+                </a>
+                <a class="u-btn u-btn-normal u-btn-xs del" data-del="3" href="${pageContext.request.contextPath}/rest/seller/deleteSellerProduct?id=">删除</a>
+            </li>
+            <li id="p-4">
+                <a href="./show.html" class="link">
+                    <div class="img"><img src="http://nec.netease.com/img/s/1.jpg" alt=""></div>
+                    <h3>内容</h3>
+                    <div class="price"><span class="v-unit">¥</span><span class="v-value">123.9</span></div>
+                </a>
+                <span class="u-btn u-btn-normal u-btn-xs del" data-del="4" onclick=deleteSellerProduct();>删除</span>
+            </li>
+            <li id="p-5">
+                <a href="./show.html" class="link">
+                    <div class="img"><img src="http://nec.netease.com/img/s/1.jpg" alt=""></div>
+                    <h3>内容</h3>
+                    <div class="price"><span class="v-unit">¥</span><span class="v-value">123.9</span></div>
+                </a>
+                <span class="u-btn u-btn-normal u-btn-xs del" data-del="5">删除</span>
+            </li>
+            <li id="p-6">
+                <a href="./show.html" class="link">
+                    <div class="img"><img src="http://nec.netease.com/img/s/1.jpg" alt=""></div>
+                    <h3>内容</h3>
+                    <div class="price"><span class="v-unit">¥</span><span class="v-value">123.9</span></div>
+                </a>
+                <span class="u-btn u-btn-normal u-btn-xs del" data-del="6">删除</span>
+            </li>
+            <li id="p-7">
+                <a href="./show.html" class="link">
+                    <div class="img"><img src="http://nec.netease.com/img/s/1.jpg" alt=""></div>
+                    <h3>内容</h3>
+                    <div class="price"><span class="v-unit">¥</span><span class="v-value">123.9</span></div>
+                </a>
+                <span class="u-btn u-btn-normal u-btn-xs del" data-del="7">删除</span>
+            </li>
+            <li id="p-8">
+                <a href="./show.html" class="link">
+                    <div class="img"><img src="http://nec.netease.com/img/s/1.jpg" alt=""></div>
+                    <h3>内容</h3>
+                    <div class="price"><span class="v-unit">¥</span><span class="v-value">123.9</span></div>
+                </a>
+                <span class="u-btn u-btn-normal u-btn-xs del" data-del="8">删除</span>
+            </li>
+            <li id="p-9">
+                <a href="./show.html" class="link">
+                    <div class="img"><img src="http://nec.netease.com/img/s/1.jpg" alt=""></div>
+                    <h3>内容</h3>
+                    <div class="price"><span class="v-unit">¥</span><span class="v-value">123.9</span></div>
+                </a>
+                <span class="u-btn u-btn-normal u-btn-xs del" data-del="9">删除</span>
+            </li>--%>
+        </ul>
     </div>
 </div>
 
+<script type="text/javascript" src="/js/pageIndex.js"></script>
+<script type="text/javascript" src="/js/global.js"></script>
 </body>
 </html>

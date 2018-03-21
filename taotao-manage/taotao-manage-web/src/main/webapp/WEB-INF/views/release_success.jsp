@@ -22,7 +22,7 @@
             <div class="user">
                 卖家你好，<span class="name">
                 ${sessionScope.username}
-            </span>！<a href="/logout">[退出]</a>
+            </span>！<a href="${pageContext.request.contextPath}/rest/index/logout">[退出]</a>
             </div>
         </div>
         <div id="head_right">
@@ -41,7 +41,7 @@
 <div class="g-doc">
     <div class="n-result">
         <h3>发布成功！</h3>
-        <p><a href="${pageContext.request.contextPath}/rest/seller/showNewProduct">[查看内容]</a><a href="${pageContext.request.contextPath}/index.jsp">[返回首页]</a></p>
+        <p><a href="${pageContext.request.contextPath}/rest/seller/showNewProduct">[查看内容]</a><a href="${pageContext.request.contextPath}/rest/seller/toSellerAllProductPage">[返回首页]</a></p>
     </div>
 </div>
 

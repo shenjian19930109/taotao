@@ -26,33 +26,7 @@
                 arr.push(name + '=' + value);
             }
             return arr.join('&');
-        },
-        findOne:function(array,id){
-            return array.filter(function(item){
-                return item.id == id;
-            })[0];
-        },
-        modifyOne:function(array,id,num){
-            var item = this.findOne(array,id);
-            item.num = num;
-        },
-        modifyTwo:function(array,id,num){
-            var item = this.findOne(array,id);
-            item.num = parseInt(item.num) + parseInt(num);
-        },
-        getCookie:function(name){
-            var result = document.cookie.match(new RegExp(name + '=([^;]+)'));
-            result && (result = JSON.parse(result[1]));
-            return result;
-        },
-        setCookie:function(name,value){
-            var cookie = [name, '=', JSON.stringify(value)].join('');
-            document.cookie = cookie;
-        },
-        deleteCookie:function(name) {
-            if (this.getCookie(name))
-                this.setCookie(name, "", -1);
-        },
+        }
     };
 
     var ajax = function(options) {
@@ -70,7 +44,7 @@
                         options.error && options.error(json.message);
                     }
                 }else{
-                    options.error && options.error('璇锋眰澶辫触');
+                    options.error && options.error('请求失败');
                 }
             }
         }
@@ -98,7 +72,7 @@
 							            <div class="winbd">{content}</div>\
 							            <div class="winft">\
 							                <button type="button" class="u-btn u-btn-primary u-btn-fw" data-action="confirm">{confirmText}</button>\
-							                <button type="button" class="u-btn u-btn-normal u-btn-fw" data-action="cancel">鍙栨秷</button>\
+							                <button type="button" class="u-btn u-btn-normal u-btn-fw" data-action="cancel">取消</button>\
 							            </div>\
 							        </div>\
 							    </div>\
@@ -121,9 +95,9 @@
         },
         reset:function(options){
             var options = options || {};
-            this.title = options.title || '鎻愮ず';
+            this.title = options.title || '提示';
             this.content = options.content || '';
-            this.confirmText = options.confirmText || '纭畾';
+            this.confirmText = options.confirmText || '确定';
             this.onconfirm = options.onconfirm || f;
             this.isConfirmed = false;
             return this;
@@ -146,7 +120,7 @@
         hide:function(){
             this.isConfirmed = false;
             this.body.style.display = 'none';
-        },
+        }
     };
 
     //loading

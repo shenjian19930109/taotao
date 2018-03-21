@@ -36,6 +36,8 @@
         <property name="dataSource" ref="dataSource" />
         <!-- 自动扫描mapping.xml文件 -->
         <property name="mapperLocations" value="classpath:mapper/**.xml"></property>
+        <!--设置pageHelper-->
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"></property>
         <!--
             定义别名,默认首字母小写。typeAliasesPackage不支持通配符
             若要typeAliasesPackage支持通配符，需要自定义SqlSessionFactoryBean ，
