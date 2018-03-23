@@ -207,8 +207,10 @@ select.u-ipt{width:auto;padding:0;line-height:1;}
 
 .n-table img{display:block;width:60px;height:60px;border-radius:2px;}
 .n-table col.img{width: 100px;}
-.n-table col.time{width:200px;}
-.n-table col.price{width:140px;}
+.n-table col.title{width: 100px;}
+.n-table col.num{width: 200px;}
+.n-table col.time{width:300px;}
+.n-table col.price{width:240px;}
 .n-table .total{text-align: right;}
 
 .n-public{position:relative;}

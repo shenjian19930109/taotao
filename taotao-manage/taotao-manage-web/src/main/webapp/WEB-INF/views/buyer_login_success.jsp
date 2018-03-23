@@ -42,12 +42,8 @@
                             "<span class=\"v-unit\">¥</span>" +
                             "<span class=\"v-value\">" + e.price + "</span>" +
                             "</div>" +
-                            <%--<c:if test="${e.sold==false}"> +
-                                "<span class=\"had\"><b>已售出</b></span>" +
-                            </c:if> +--%>
                             "<span class=\"had\"><b>" + e.sellStatus + "</b></span>" +
                             "</a>" +
-                                /*"<span class=\"u-btn u-btn-normal u-btn-xs del\" data-del=" + e.id + ">删除</span>" +*/
                             "</li>");
 
                 })
@@ -120,7 +116,7 @@
                 <span>|</span>
                 <a class="head_nav_a" href="${pageContext.request.contextPath}/rest/buyer/toShoppingCarPage">购物车</a>
                 <span>|</span>
-                <a class="head_nav_a" href="${pageContext.request.contextPath}/rest/buyer/toBuyerAllProductPage">首页</a>
+                <a class="head_nav_a" href="${pageContext.request.contextPath}/rest/buyer/toBuyerProductsIndex">首页</a>
             </div>
         </div>
     </div>
@@ -144,8 +140,8 @@
     <div class="m-tab m-tab-fw m-tab-simple f-cb">
         <div class="tab">
             <ul>
-                <li class="z-sel"><a href="${pageContext.request.contextPath}/rest/seller/toSellerAllProductPage">所有内容</a></li>
-                <li><a href="${pageContext.request.contextPath}/rest/seller/toSellerUnSoldProductPage">未购买的内容</a></li>
+                <li class="z-sel"><a href="${pageContext.request.contextPath}/rest/buyer/toBuyerProductsIndex">所有内容</a></li>
+                <li><a href="${pageContext.request.contextPath}/rest/buyer/toUnBoughtProductsIndex">未购买的内容</a></li>
             </ul>
         </div>
     </div>

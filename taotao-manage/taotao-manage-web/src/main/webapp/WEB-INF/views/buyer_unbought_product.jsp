@@ -1,15 +1,15 @@
 <%--
   Created by IntelliJ IDEA.
   User: apple
-  Date: 18/3/16
-  Time: 上午10:14
+  Date: 18/3/22
+  Time: 上午10:35
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head lang="en">
+<head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>买家页面</title>
     <!--基础样式-->
     <link rel="stylesheet" type="text/css" href="/css/iconfont.css">
     <!--页面样式-->
@@ -21,14 +21,13 @@
     <script src="/js/jquery.animate-colors-min.js"></script>
     <script type="text/javascript" src="/js/xiaomi.js"></script>
     <script type="text/javascript" src="/js/pagenation.js"></script>
-
 </head>
 
 <script>
     $(document).ready(function(){
                 data=$.ajax({
                     type: "POST",
-                    url:"${pageContext.request.contextPath}/rest/seller/listAllUnSoldProducts?username=${sessionScope.username}",
+                    url:"${pageContext.request.contextPath}/rest/buyer/listUnBoughtProducts?username=${sessionScope.username}",
                     async:false,
                     dataType: "json",
                 });
@@ -36,45 +35,72 @@
                 var data2 = JSON.parse(data2);
                 data2.forEach(function(e){
                     $("#plist").append("<li id=\"p-" + e.id + "\">" +
-                            "<a href=\"${pageContext.request.contextPath}/rest/seller/showSellerOneProduct?id=" + e.id + "\" class=\"link\">" +
+                            "<a href=\"${pageContext.request.contextPath}/rest/buyer/showBuyerOneProduct?id=" + e.id + "\" class=\"link\">" +
                             "<div class=\"img\"><img src=" + e.file + " alt=\"" + e.title + "\"></div>" +
                             "<h3>" + e.title + "</h3>" +
                             "<div class=\"price\">" +
                             "<span class=\"v-unit\">¥</span>" +
                             "<span class=\"v-value\">" + e.price + "</span>" +
                             "</div>" +
-                            <%--<c:if test="${e.sold==false}"> +
-                                "<span class=\"had\"><b>已售出</b></span>" +
-                            </c:if> +--%>
                             "<span class=\"had\"><b>" + e.sellStatus + "</b></span>" +
                             "</a>" +
-                            "<span class=\"u-btn u-btn-normal u-btn-xs del\" data-del=" + e.id + " onclick=\"del_product(" + e.id + ");\">删除</span>" +
                             "</li>");
 
                 })
             }
     );
+    /*$(document).ready(function(){
+     data=$.ajax({
+     type: "POST",
+     url:"${pageContext.request.contextPath}/rest/seller/listAllUnSoldProducts?username=${sessionScope.username}",
+     async:false,
+     dataType: "json",
+     });
+     data2 = data.responseText;
+     var data2 = JSON.parse(data2);
+     data2.forEach(function(e){
+     $("#plist").append("<li id=\"p-" + e.id + "\">" +
+     "<a href=\"${pageContext.request.contextPath}/rest/seller/showSellerOneProduct?id=" + e.id + "\" class=\"link\">" +
+     "<div class=\"img\"><img src=" + e.file + " alt=\"" + e.title + "\"></div>" +
+     "<h3>" + e.title + "</h3>" +
+     "<div class=\"price\">" +
+     "<span class=\"v-unit\">¥</span>" +
+     "<span class=\"v-value\">" + e.price + "</span>" +
+     "</div>" +
+    <%--<c:if test="${e.sold==false}"> +
+        "<span class=\"had\"><b>已售出</b></span>" +
+    </c:if> +--%>
+     "<span class=\"had\"><b>" + e.sellStatus + "</b></span>" +
+     "</a>" +
+     /!*"<span class=\"u-btn u-btn-normal u-btn-xs del\" data-del=" + e.id + " onclick=deleteSellerProduct(" + e.id + ");>删除</span>" +*!/
+     /!*"<span id='span' class=\"u-btn u-btn-normal u-btn-xs del\" data-del=" + e.id + ">删除</span>" +*!/
+     /!*"<a class=\"u-btn u-btn-normal u-btn-xs del\" data-del=" + e.id + " href=\"${pageContext.request.contextPath}/rest/seller/deleteSellerProduct?id=" + e.id + ">删除</a>" +*!/
 
-    function del_product(id) {
-        $(window.location).prop("href", "${pageContext.request.contextPath}/rest/seller/deleteSellerProduct?id=" + id);
-    }
+
+     /!*"<a class=\"u-btn u-btn-normal u-btn-xs del\" data-del=" + e.id + " href=\"${pageContext.request.contextPath}/rest/seller/deleteSellerProduct?id=" + e.id + ">" +
+     "<span >删除</span>" +*!/
+     "</a>" +
+     "</li>");
+
+     })
+     }
+     );*/
+
+    /*$ (function ()
+     {
+     $ ('#span').click (function ()
+     {
+     $(window.location).prop('href', '${pageContext.request.contextPath}/rest/seller/deleteSellerProduct?id=' + $ ('#span').attr('data-del'));
+     })
+     })*/
 
 </script>
-
-<%--<script language="javascript">
-    $(function(){
-//        alert("111")
-        //直接制作Tab菜单，默认选择为第二项，且切换的时候fade动画
-        $("#tab > ul").tabs("select", 2);
-    });
-</script>--%>
-
 <body>
 <div class="head_box">
     <div id="head_wrap">
         <div id="head_nav">
             <div class="user">
-                卖家你好，<span class="name">
+                买家你好，<span class="name">
                 ${sessionScope.username}
             </span>！<a href="${pageContext.request.contextPath}/rest/index/logout">[退出]</a>
             </div>
@@ -86,9 +112,11 @@
             </div>
             <div id="head_landing">
                 <!--${pageContext.request.contextPath}-->
-                <a class="head_nav_a" href="${pageContext.request.contextPath}/rest/seller/toReleasePage">发布</a>
+                <a class="head_nav_a" href="${pageContext.request.contextPath}/rest/buyer/toAccountPage">账务</a>
                 <span>|</span>
-                <a class="head_nav_a" href="${pageContext.request.contextPath}/rest/seller/toSellerAllProductPage">首页</a>
+                <a class="head_nav_a" href="${pageContext.request.contextPath}/rest/buyer/toShoppingCarPage">购物车</a>
+                <span>|</span>
+                <a class="head_nav_a" href="${pageContext.request.contextPath}/rest/buyer/toBuyerProductsIndex">首页</a>
             </div>
         </div>
     </div>
@@ -110,10 +138,10 @@
 
 <div class="g-doc">
     <div class="m-tab m-tab-fw m-tab-simple f-cb">
-        <div class="tab" id="tab">
-            <ul id="tab-ul">
-                <li ><a href="${pageContext.request.contextPath}/rest/seller/toSellerAllProductPage">所有内容</a></li>
-                <li class="z-sel"><a href="${pageContext.request.contextPath}/rest/seller/toSellerUnSoldProductPage">未售出的内容</a></li>
+        <div class="tab">
+            <ul>
+                <li ><a href="${pageContext.request.contextPath}/rest/buyer/toBuyerProductsIndex">所有内容</a></li>
+                <li class="z-sel"><a href="${pageContext.request.contextPath}/rest/buyer/toUnBoughtProductsIndex">未购买的内容</a></li>
             </ul>
         </div>
     </div>
@@ -141,7 +169,7 @@
                     <h3>内容</h3>
                     <div class="price"><span class="v-unit">¥</span><span class="v-value">123.9</span></div>
                 </a>
-                <span class="u-btn u-btn-normal u-btn-xs del" data-del="3">删除</span>
+                <a class="u-btn u-btn-normal u-btn-xs del" data-del="3" href="${pageContext.request.contextPath}/rest/seller/deleteSellerProduct?id=">删除</a>
             </li>
             <li id="p-4">
                 <a href="./show.html" class="link">
@@ -149,7 +177,7 @@
                     <h3>内容</h3>
                     <div class="price"><span class="v-unit">¥</span><span class="v-value">123.9</span></div>
                 </a>
-                <span class="u-btn u-btn-normal u-btn-xs del" data-del="4">删除</span>
+                <span class="u-btn u-btn-normal u-btn-xs del" data-del="4" onclick=deleteSellerProduct();>删除</span>
             </li>
             <li id="p-5">
                 <a href="./show.html" class="link">

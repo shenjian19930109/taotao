@@ -56,6 +56,9 @@
                             "<em class=\"jian\">"+ "-" + "</em>" +
                             "<input type='text' class=\"num\" id=\"purchaseNum\" value=" + e.purchaseNum + ">" + "</input>" +
                             "<em class=\"add\">"+ "+" + "</em>" +
+                            "<input type='hidden' class=\"productId\" id=\"productId\" value=" + e.productId + ">" + "</input>" +
+                            "<input type='hidden' class=\"userId\" id=\"userId\" value=" + e.userId + ">" + "</input>" +
+                            "<input type='hidden' class=\"username\" id=\"username\" value=" + e.username + ">" + "</input>" +
                             "</td>" +
                             /*"<span id=\"thisId\">" + e.id + "</span>" +*/
                             "<td>" + e.price + "</td>" +
@@ -71,7 +74,6 @@
             var n=$(this).prev().val();
             var num=parseInt(n)+1;
             if(num==0){ return;}
-//            $(this).prev().val(num);
             $(this).prev().attr("value", num);
         });
         //减的效果
@@ -79,10 +81,15 @@
             var n=$(this).next().val();
             var num=parseInt(n)-1;
             if(num==0){ return}
-//            $(this).next().val(num);
             $(this).next().attr("value", num);
         });
     });
+    
+    $(function () {
+        $("#back").click(function () {
+            $(window.location).prop("href", "javascript:history.go(-1)");
+        })
+    })
 
     function shopping_car () {
         //封装数据的对象
@@ -92,9 +99,10 @@
             title: "",
             purchaseNum: "",
             price: "",
+            productId: "",
+            userId: "",
+            username: ""
         };
-//        var a = JSON.parse("{\"data\":[]}");
-
         var a = new Array();
 
         //封装底部表格中的数据
@@ -107,6 +115,9 @@
                 ShoppingCarObj.title = document.getElementById("newTable").rows[i].cells[1].innerHTML;
                 ShoppingCarObj.purchaseNum = document.getElementById("newTable").rows[i].cells[2].childNodes[1].getAttribute('value');
                 ShoppingCarObj.price = document.getElementById("newTable").rows[i].cells[3].innerHTML;
+                ShoppingCarObj.productId = document.getElementById("newTable").rows[i].cells[2].childNodes[3].getAttribute('value');
+                ShoppingCarObj.userId = document.getElementById("newTable").rows[i].cells[2].childNodes[4].getAttribute('value');
+                ShoppingCarObj.username = document.getElementById("newTable").rows[i].cells[2].childNodes[5].getAttribute('value');
 //                a.data.push(ShoppingCarObj);//向JSON数组添加JSON对象的方法；很关键
                 a.push(ShoppingCarObj);
             }
@@ -118,28 +129,20 @@
 
     $(function () {
         $("#account").click(function(){
-            var mymessage=confirm("确认购买吗？");
-            if(mymessage==true){
 
-                /*遍历获取table中的购物车表id,标题,数量,价格*/
-                var sc_json = shopping_car();
-                /*确认购买,跳转springmvc*/
-
-
-                /*$.ajax({
-                    url: "${pageContext.request.contextPath}/rest/buyer/clearShoppingCar",
-                    type: "POST",
-                    dataType:"json",
-                    data: sc_json,
-                    success: function(data){
-                    }
-                });*/
-
-
-                window.location.href="${pageContext.request.contextPath}/rest/buyer/clearShoppingCar?sc=" + sc_json;
-
-            }else if(mymessage==false){
-                /*取消,什么都不做*/
+            /*判断table是否为空*/
+            var rows = document.getElementById("newTable").rows.length; //获得行数(包括thead)
+//            alert(rows);// 为空,row=1.
+            if(rows>1){
+                var mymessage=confirm("确认购买吗？");
+                if(mymessage==true){
+                    /*遍历获取table中的购物车表id,标题,数量,价格*/
+                    var sc_json = shopping_car();
+                    /*确认购买,跳转springmvc*/
+                    window.location.href="${pageContext.request.contextPath}/rest/buyer/clearShoppingCar?sc=" + sc_json;
+                }else if(mymessage==false){
+                    /*取消,什么都不做*/
+                }
             }
         });
     })
@@ -171,7 +174,7 @@
                 <span>|</span>
                 <a class="head_nav_a" href="${pageContext.request.contextPath}/rest/buyer/toShoppingCarPage">购物车</a>
                 <span>|</span>
-                <a class="head_nav_a" href="${pageContext.request.contextPath}/rest/seller/toSellerAllProductPage">首页</a>
+                <a class="head_nav_a" href="${pageContext.request.contextPath}/rest/buyer/toBuyerProductsIndex">首页</a>
             </div>
         </div>
     </div>

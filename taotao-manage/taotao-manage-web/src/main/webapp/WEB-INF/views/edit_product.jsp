@@ -89,7 +89,7 @@
                 <!--${pageContext.request.contextPath}-->
                 <a class="head_nav_a" href="${pageContext.request.contextPath}/rest/seller/toReleasePage">发布</a>
                 <span>|</span>
-                <a class="head_nav_a" href="${pageContext.request.contextPath}/index.jsp">首页</a>
+                <a class="head_nav_a" href="${pageContext.request.contextPath}/rest/seller/toSellerAllProductPage">首页</a>
             </div>
         </div>
     </div>

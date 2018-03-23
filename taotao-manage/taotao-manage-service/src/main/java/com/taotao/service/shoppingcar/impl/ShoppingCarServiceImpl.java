@@ -1,17 +1,18 @@
 package com.taotao.service.shoppingcar.impl;
 
 import com.google.common.collect.Lists;
+import com.taotao.mapper.BuyerProductMapper;
 import com.taotao.mapper.ProductMapper;
+import com.taotao.mapper.SellerProductMapper;
 import com.taotao.mapper.ShoppingCarMapper;
-import com.taotao.po.Product;
-import com.taotao.po.ShoppingCar;
-import com.taotao.po.ShoppingCarExample;
+import com.taotao.po.*;
 import com.taotao.service.shoppingcar.ShoppingCarService;
 import com.taotao.utils.OrikaMapperUtil;
 import com.taotao.vo.ShoppingCarVO;
 import ma.glasnost.orika.MapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,12 @@ public class ShoppingCarServiceImpl implements ShoppingCarService {
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Autowired
+    private BuyerProductMapper buyerProductMapper;
+
+    @Autowired
+    private SellerProductMapper sellerProductMapper;
 
     @Autowired
     private ShoppingCarMapper shoppingCarMapper;
@@ -95,8 +102,97 @@ public class ShoppingCarServiceImpl implements ShoppingCarService {
      *
      *
      * */
+    @Transactional
     @Override
     public void clearShoppingCar(List<ShoppingCarVO> shoppingCarVOs) {
+        try {
+            // 1,将该客户(买家)的购物车表bought位置1;
+            setShoppingCarToBought(shoppingCarVOs);
 
+            // 2,在买家商品表中添加记录,记录该买家购买了若干商品;
+            batchShoppingCarIntoDB(shoppingCarVOs);
+
+            // 3,在卖家商品表中更新sold和sold_num字段.
+            updateSellerProductTable(shoppingCarVOs);
+        }catch (Exception e) {
+            throw new RuntimeException("清空购物车失败!!!" + e);
+        }
+    }
+
+    // 根据userId和productId唯一确定记录,并更新sold和sold_num字段.
+    private void updateSellerProductTable(List<ShoppingCarVO> shoppingCarVOs) {
+
+        for (ShoppingCarVO shoppingCarVO:
+                shoppingCarVOs) {
+
+            // 先根据userId和productId查询到记录
+            SellerProductExample sellerProductExample = new SellerProductExample();
+            sellerProductExample.createCriteria()
+                    .andProductIdEqualTo(shoppingCarVO.getProductId());
+            List<SellerProduct> sellerProducts = sellerProductMapper.selectByExample(sellerProductExample);
+            if (sellerProducts.size() > 0) {
+
+                SellerProduct oldSellerProduct = sellerProducts.get(0);
+                // 判断sold是否为true,若为true,表示已卖出,则只需要将soldNum = soldNum + shoppingCarVO.getPurchaseNum();
+                // 若为false,表示未卖出,则需要先将sold置为true,再将soldNum = shoppingCarVO.getPurchaseNum();
+                Boolean sold = oldSellerProduct.getSold();
+                SellerProduct newSellerProduct = new SellerProduct();
+                if (sold) {
+                    newSellerProduct.setSoldNum(oldSellerProduct.getSoldNum() + shoppingCarVO.getPurchaseNum());
+                }else {
+                    newSellerProduct.setSold(true);
+                    newSellerProduct.setSoldNum(shoppingCarVO.getPurchaseNum());
+                }
+
+                SellerProductExample newSellerProductExample = new SellerProductExample();
+                newSellerProductExample.createCriteria().andIdEqualTo(oldSellerProduct.getId());
+                sellerProductMapper.updateByExampleSelective(newSellerProduct, newSellerProductExample);
+
+            }else {
+                throw new RuntimeException("清空购物车时,更新卖家商品表时无法获取到userId和productId对应的记录 : " + shoppingCarVO.getUserId() + ", " + shoppingCarVO.getProductId());
+            }
+        }
+    }
+
+    // 将购物车里的商品全部插入到买家商品表中(批量插入)
+    private void batchShoppingCarIntoDB(List<ShoppingCarVO> shoppingCarVOs) {
+
+        // VO-->PO
+        MapperFactory mapperFactory = OrikaMapperUtil.newDefaultInstance();
+
+        mapperFactory.classMap(ShoppingCarVO.class, BuyerProduct.class)
+                .exclude("id")
+                .field("purchaseNum", "soldNum")
+                .field("price", "finalPrice")
+                .byDefault()
+                .register();
+
+        List<BuyerProduct> buyerProducts = Lists.newArrayList();
+        for (ShoppingCarVO shoppingCarVO:
+                shoppingCarVOs) {
+            BuyerProduct buyerProduct = mapperFactory.getMapperFacade().map(shoppingCarVO, BuyerProduct.class);
+            buyerProduct.setSold(true);
+            buyerProducts.add(buyerProduct);
+        }
+
+        int effLen = buyerProductMapper.insertIntoShoppingCarBatch(buyerProducts);
+
+//        System.out.println(effLen);
+
+    }
+
+    // 将该用户的购物车表里的数据置为已购买
+    private void setShoppingCarToBought(List<ShoppingCarVO> shoppingCarVOs) {
+
+        ArrayList<Long> ids = Lists.newArrayList();
+        for (ShoppingCarVO shoppingCarVO:
+                shoppingCarVOs) {
+            ids.add(shoppingCarVO.getId());
+        }
+        ShoppingCar shoppingCar = new ShoppingCar();
+        shoppingCar.setBought(true);
+        ShoppingCarExample shoppingCarExample = new ShoppingCarExample();
+        shoppingCarExample.createCriteria().andIdIn(ids);
+        shoppingCarMapper.updateByExampleSelective(shoppingCar, shoppingCarExample);
     }
 }

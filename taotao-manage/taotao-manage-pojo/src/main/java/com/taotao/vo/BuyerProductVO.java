@@ -1,6 +1,7 @@
 package com.taotao.vo;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Created by apple on 18/3/17.
@@ -22,10 +23,18 @@ public class BuyerProductVO extends ProductVO{
 
     private String username;
 
+    private Date createTime;
+
+    private Date modifyTime;
+
+    private String createTimeStr;
+
+    private String modifyTimeStr;
+
     public BuyerProductVO() {
     }
 
-    public BuyerProductVO(long id, String title, String summary, String pic, String image, String file, String avatar, String detail, BigDecimal price, long publicId, boolean sold, String sellStatus, int soldNum, BigDecimal finalPrice, long userId, String username) {
+    public BuyerProductVO(long id, String title, String summary, String pic, String image, String file, String avatar, String detail, BigDecimal price, long publicId, boolean sold, String sellStatus, int soldNum, BigDecimal finalPrice, long userId, String username, Date createTime, Date modifyTime, String createTimeStr, String modifyTimeStr) {
         super(id, title, summary, pic, image, file, avatar, detail, price);
         this.publicId = publicId;
         this.sold = sold;
@@ -34,6 +43,10 @@ public class BuyerProductVO extends ProductVO{
         this.finalPrice = finalPrice;
         this.userId = userId;
         this.username = username;
+        this.createTime = createTime;
+        this.modifyTime = modifyTime;
+        this.createTimeStr = createTimeStr;
+        this.modifyTimeStr = modifyTimeStr;
     }
 
     public boolean isSold() {
@@ -90,5 +103,37 @@ public class BuyerProductVO extends ProductVO{
 
     public void setSellStatus(String sellStatus) {
         this.sellStatus = sellStatus;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
+    }
+
+    public String getCreateTimeStr() {
+        return createTimeStr;
+    }
+
+    public void setCreateTimeStr(String createTimeStr) {
+        this.createTimeStr = createTimeStr;
+    }
+
+    public String getModifyTimeStr() {
+        return modifyTimeStr;
+    }
+
+    public void setModifyTimeStr(String modifyTimeStr) {
+        this.modifyTimeStr = modifyTimeStr;
     }
 }

@@ -68,7 +68,7 @@
 
 
             <div class="oprt f-cb" style="margin-left:120px;margin-top:30px;">
-                <%--<a href="${pageContext.request.contextPath}/rest/seller/toEditProduct" class="u-btn u-btn-primary">编 辑</a>--%>
+                <a href="${pageContext.request.contextPath}/rest/seller/toEditProduct?productId=${sessionScope.sellerProductVO.id}" class="u-btn u-btn-primary">编 辑</a>
             </div>
         </div>
     </div>

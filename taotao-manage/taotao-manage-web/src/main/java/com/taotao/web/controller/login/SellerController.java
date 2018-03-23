@@ -113,7 +113,15 @@ public class SellerController {
      * @return 跳转编辑页面
      * */
     @RequestMapping(value = "toEditProduct", method = RequestMethod.GET)
-    public String editProduct() {
+    public String editProduct(@RequestParam("productId") long productId, HttpSession session) {
+        SellerProductVO sellerProductVO = sellerProductService.selectSellerOneProductByProductId(productId);
+        session.setAttribute("productVO", sellerProductVO);
+        session.setAttribute("productId", productId);
+        return "edit_product";
+    }
+
+    @RequestMapping(value = "toEditNewProduct", method = RequestMethod.GET)
+    public String editNewProduct() {
         return "edit_product";
     }
 

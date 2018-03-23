@@ -1,6 +1,7 @@
 package com.taotao.po;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Created by apple on 18/3/17.
@@ -19,6 +20,10 @@ public class BuyerProductPO extends Product {
     private long userId;
 
     private String username;
+
+    private Date createTime;
+
+    private Date modifyTime;
 
     public BuyerProductPO() {
     }
@@ -69,5 +74,25 @@ public class BuyerProductPO extends Product {
 
     public void setPublicId(long publicId) {
         this.publicId = publicId;
+    }
+
+    @Override
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    @Override
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    @Override
+    public Date getModifyTime() {
+        return modifyTime;
+    }
+
+    @Override
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
     }
 }

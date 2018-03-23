@@ -59,10 +59,10 @@
             <div class="price" style="color:#123456;font-size:25px;margin-top:100px;margin-left: 120px">
                 <span class="v-unit">¥</span><span class="v-value">${sessionScope.productVO.price}</span>
             </div>
-            <div class="num">购买数量：<span id="plusNum" class="lessNum"><a>-</a></span>
+            <%--<div class="num">购买数量：<span id="plusNum" class="lessNum"><a>-</a></span>
                                         <span class="totalNum" id="allNum">0</span>
                                     <span id="addNum" class="moreNum"><a>+</a></span>
-            </div>
+            </div>--%>
             <div class="oprt f-cb" style="margin-left:120px;margin-top:30px;">
                 <%--<a href="${pageContext.request.contextPath}/rest/seller/toEditProduct" class="u-btn u-btn-primary">编 辑</a>--%>
             </div>

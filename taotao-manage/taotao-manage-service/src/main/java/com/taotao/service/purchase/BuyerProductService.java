@@ -10,10 +10,14 @@ import java.util.List;
  */
 public interface BuyerProductService {
 
-    List<BuyerProductVO> listAllBuyerProductsByUsername(String username);
+//    List<BuyerProductVO> listAllBuyerProductsByUsername(String username);
 
     List<BuyerProductVO> listAllBuyerProducts();
 
 
     BuyerProductVO showBuyerOneProductByProductId(long id);
+
+    List<BuyerProductVO> listUnBoughtProductsByUsername(String username);
+
+    List<BuyerProductVO> listAccount(String username);
 }

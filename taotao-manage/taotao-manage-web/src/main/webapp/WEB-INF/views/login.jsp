@@ -25,28 +25,21 @@
     <%--<script type="text/javascript" src="js/jQuery-2.2.0.min.js"></script>--%>
     <script type="text/javascript" src="../../js/jquery.md5.js"></script>
 </head>
+
+<script>
+
+    $(function () {
+        $(".clear_input").click(function () {
+            $("#username").attr("value", "");
+        })
+    })
+
+
+</script>
+
 <body>
     <div class="head_box">
         <div id="head_wrap">
-            <%--<div id="head_nav">
-                <a class="head_nav_a">大米网</a>
-                <span>|</span>
-                <a class="head_nav_a">MIUI</a>
-                <span>|</span>
-                <a class="head_nav_a">米聊</a>
-                <span>|</span>
-                <a class="head_nav_a">游戏</a>
-                <span>|</span>
-                <a class="head_nav_a">多看阅读</a>
-                <span>|</span>
-                <a class="head_nav_a">云服务</a>
-                <span>|</span>
-                <a class="head_nav_a">大米移动版</a>
-                <span>|</span>
-                <a class="head_nav_a">问题反馈</a>
-                <span>|</span>
-                <a class="head_nav_a" id="Select_Region_but">Select Region</a>
-            </div>--%>
             <div id="head_right">
                 <div id="head_landing">
                     <!--${pageContext.request.contextPath}-->
@@ -54,12 +47,6 @@
                     <span>|</span>
                     <a class="head_nav_a" href="${pageContext.request.contextPath}/index.jsp">首页</a>
                 </div>
-                <%--<div id="head_car">
-                    <a class="head_car_text">购物车（0）</a>
-                    <div id="car_content" style="height: 0px;width:0px ;background-color: #edffc6;z-index: 999">
-                        <a class="car_text"></a>
-                    </div>
-                </div>--%>
             </div>
         </div>
     </div>
@@ -71,12 +58,12 @@
     <div class="login_reg " style="color: #00FF00; " >
         <ul>
             <li> <i class="icon iconfont" >&#xe620;</i>
-                <input id="username" name="userName" type="text" class="input_text_user ClearInput " placeholder="用户名" required  ><a href="javascript:" class="clear_input">x</a>
+                <input id="username" name="userName" type="text" class="input_text_user ClearInput " placeholder="用户名" required ><a href="javascript:" class="clear_input">x</a>
             </li>
             <li> <i class="icon iconfont " >&#xe606;</i>
-                <input id="password" name="passWord" type="password" class="input_text_password mima_dd " placeholder="请输入密码" onblur="mdjia()">
-                <%--<input name="passWord" type="text" class="input_text_password mima_wz" style="display:none;" placeholder="请输入密码" >--%>
-                <a class="eyes_box " data-show="1" href="javascript:void(0);"><i class="icon iconfont" >&#xe624;</i></a> </li>
+                <input id="password" name="passWord" type="password" class="input_text_password mima_dd " placeholder="请输入密码" onchange="mdjia()">
+                <input type="text" class="input_text_password mima_wz" style="display:none;" placeholder="请输入密码" onchange="mdjia()">
+                <a id="eyes_box" class="eyes_box" data-show="1" href="javascript:void(0);"><i class="icon iconfont" >&#xe624;</i></a> </li>
         </ul>
         <%--<a href="#" class="denglu_but" >登录</a>--%>
         <input type="submit" class="denglu_but" value="登 录" />
@@ -86,10 +73,20 @@
 </body>
 <script type="text/javascript">
     function mdjia(){
-        var password=$("#password").val();
-        var pwd=$.md5(password);
-        /*alert(pwd);*/
-        $("#password").val(pwd);
+
+        if($("#eyes_box").attr("data-show")==1){
+            var password=$("#password").val();
+            var pwd=$.md5(password);
+            $("#password").attr("value", pwd);
+        }
+
+        if($("#eyes_box").attr("data-show")==2){
+            var password=$(".mima_wz").val();
+            var pwd=$.md5(password);
+            $("#password").attr("value", pwd);
+        }
+
+
     }
 </script>
 </html>

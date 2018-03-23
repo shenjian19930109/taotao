@@ -44,12 +44,8 @@
                     "<span class=\"v-unit\">¥</span>" +
                     "<span class=\"v-value\">" + e.price + "</span>" +
                     "</div>" +
-                        <%--<c:if test="${e.sold==false}"> +
-                            "<span class=\"had\"><b>已售出</b></span>" +
-                        </c:if> +--%>
-                        "<span class=\"had\"><b>" + e.sellStatus + "</b></span>" +
+                    "<span class=\"had\"><b>" + e.sellStatus + "</b></span>" +
                     "</a>" +
-                    /*"<span class=\"u-btn u-btn-normal u-btn-xs del\" data-del=" + e.id + ">删除</span>" +*/
                     "</li>");
 
         })
@@ -73,18 +69,9 @@
                     "<span class=\"v-unit\">¥</span>" +
                     "<span class=\"v-value\">" + e.price + "</span>" +
                     "</div>" +
-                        <%--<c:if test="${e.sold==false}"> +
-                            "<span class=\"had\"><b>已售出</b></span>" +
-                        </c:if> +--%>
-                        "<span class=\"had\"><b>" + e.sellStatus + "</b></span>" +
+                    "<span class=\"had\"><b>" + e.sellStatus + "</b></span>" +
                     "</a>" +
-                    /*"<span class=\"u-btn u-btn-normal u-btn-xs del\" data-del=" + e.id + " onclick=deleteSellerProduct(" + e.id + ");>删除</span>" +*/
-                    "<span id='span' class=\"u-btn u-btn-normal u-btn-xs del\" data-del=" + e.id + ">删除</span>" +
-                    /*"<a class=\"u-btn u-btn-normal u-btn-xs del\" data-del=" + e.id + " href=\"${pageContext.request.contextPath}/rest/seller/deleteSellerProduct?id=" + e.id + ">删除</a>" +*/
-
-
-                    /*"<a class=\"u-btn u-btn-normal u-btn-xs del\" data-del=" + e.id + " href=\"${pageContext.request.contextPath}/rest/seller/deleteSellerProduct?id=" + e.id + ">" +
-                    "<span >删除</span>" +*/
+                    "<span id=\"delspan\" class=\"u-btn u-btn-normal u-btn-xs del\" data-del=" + e.id + " onclick=\"del_product(" + e.id + ");\">删除</span>" +
                     "</a>" +
                     "</li>");
 
@@ -92,13 +79,16 @@
     }
 );
 
-    $ (function ()
-        {
-            $ ('#span').click (function ()
-            {
-                $(window.location).prop('href', '${pageContext.request.contextPath}/rest/seller/deleteSellerProduct?id=' + $ ('#span').attr('data-del'));
-            })
+    function del_product(id) {
+        $(window.location).prop("href", "${pageContext.request.contextPath}/rest/seller/deleteSellerProduct?id=" + id);
+    }
+
+    /*$(function(){
+        $("#delspan").click(function(){
+            alert($("#delspan").attr("data-del"));
+            $(window.location).prop("href", "${pageContext.request.contextPath}/rest/seller/deleteSellerProduct?id=" + $("#span").attr("data-del"));
         })
+    });*/
 
 </script>
 <body>
