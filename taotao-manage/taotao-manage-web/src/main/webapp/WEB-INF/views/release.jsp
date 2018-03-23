@@ -64,10 +64,75 @@
     }
 
     function display_img() {
-
-        /*alert($("#imgAddr").val());*/
         $("#avatarShow").attr("src", $("#imgAddr").val());
+    }
 
+
+    $(function () {
+        $("#title").blur(function(){
+            var $parent = $(this).parent();
+            $parent.find(".msg").remove(); //删除以前的提醒元素（find()：查找匹配元素集中元素的所有匹配元素）
+            var titleLen = $("#title").val().trim().length;
+            if(titleLen<2 || titleLen>50){
+                var errorMsg = " 长度错误！";
+                $parent.append("<span class='msg onError' style='color:#F00'>" + errorMsg + "</span>");
+            }
+        })
+        $("#summary").blur(function(){
+            var $parent = $(this).parent();
+            $parent.find(".msg").remove(); //删除以前的提醒元素（find()：查找匹配元素集中元素的所有匹配元素）
+            var titleLen = $("#summary").val().trim().length;
+            if(titleLen<2 || titleLen>140){
+                var errorMsg = " 长度错误！";
+                $parent.append("<span class='msg onError' style='color:#F00'>" + errorMsg + "</span>");
+            }
+        })
+        $("#detail").blur(function(){
+            var $parent = $(this).parent();
+            $parent.find(".msg").remove(); //删除以前的提醒元素（find()：查找匹配元素集中元素的所有匹配元素）
+            var titleLen = $("#detail").val().trim().length;
+            if(titleLen<2 || titleLen>1000){
+                var errorMsg = " 长度错误！";
+                $parent.append("<span class='msg onError' style='color:#F00'>" + errorMsg + "</span>");
+            }
+        })
+        $("#price").blur(function(){
+            var $parent = $(this).parent();
+            $parent.find(".msg").remove(); //删除以前的提醒元素（find()：查找匹配元素集中元素的所有匹配元素）
+            var price = $("#price").val().trim();
+            if(!$.isNumeric(price)){
+                var errorMsg = " 类型错误！";
+                $parent.append("<span class='msg onError' style='color:#F00'>" + errorMsg + "</span>");
+            }
+        })
+    })
+
+    function confirm(){
+        /*校验标题\摘要\正文的长度,不正确则不能提交*/
+        if($("#title").val().trim().length < 2){
+            $("#title").focus();
+            return false;
+        }else if($("#title").val().trim().length > 80){
+            $("#title").focus();
+            return false;
+        }else if($("#summary").val().trim().length < 2){
+            $("#summary").focus();
+            return false;
+        }else if($("#summary").val().trim().length > 140){
+            $("#summary").focus();
+            return false;
+        }else if($("#detail").val().trim().length < 2){
+            $("#detail").focus();
+            return false;
+        }else if($("#detail").val().trim().length > 1000){
+            $("#detail").focus();
+            return false;
+        }else if(!$.isNumeric($("#price").val().trim())){
+            $("#price").focus();
+            return false;
+        }else {
+            return true;
+        }
     }
 
 </script>
@@ -90,12 +155,6 @@
                 <span>|</span>
                 <a class="head_nav_a" href="${pageContext.request.contextPath}/rest/seller/toSellerAllProductPage">首页</a>
             </div>
-            <%--<div id="head_car">
-                <a class="head_car_text">购物车（0）</a>
-                <div id="car_content" style="height: 0px;width:0px ;background-color: #edffc6;z-index: 999">
-                    <a class="car_text"></a>
-                </div>
-            </div>--%>
         </div>
     </div>
 </div>
@@ -105,17 +164,17 @@
         <h2>内容发布</h2>
     </div>
     <div class="n-public">
-        <form class="m-form m-form-ht" id="form" method="post" action="${pageContext.request.contextPath}/rest/seller/publicSubmit" ><%--onsubmit="return false;" autocomplete="off"--%>
+        <form class="m-form m-form-ht" id="form" method="post" action="${pageContext.request.contextPath}/rest/seller/publicSubmit" onSubmit="return confirm();"><%--onsubmit="return false;" autocomplete="off"--%>
             <div class="fmitem">
                 <label class="fmlab">标题：</label>
                 <div class="fmipt">
-                    <input class="u-ipt ipt" name="title" autofocus placeholder="2-80字符"/>
+                    <input id="title" class="u-ipt ipt" name="title" autofocus placeholder="2-80字符"/>
                 </div>
             </div>
             <div class="fmitem">
                 <label class="fmlab">摘要：</label>
                 <div class="fmipt">
-                    <input class="u-ipt ipt" name="summary" placeholder="2-140字符"/>
+                    <input id="summary" class="u-ipt ipt" name="summary" placeholder="2-140字符"/>
                 </div>
             </div>
             <div class="fmitem">
@@ -139,13 +198,13 @@
             <div class="fmitem">
                 <label class="fmlab">正文：</label>
                 <div class="fmipt">
-                    <textarea class="u-ipt" name="detail" rows="10" placeholder="2-1000个字符"></textarea>
+                    <textarea id="detail" class="u-ipt" name="detail" rows="10" placeholder="2-1000个字符"></textarea>
                 </div>
             </div>
             <div class="fmitem">
                 <label class="fmlab">价格：</label>
                 <div class="fmipt">
-                    <input class="u-ipt price" name="price"/>元
+                    <input id="price" class="u-ipt price" name="price"/>元
                 </div>
             </div>
             <div class="fmitem fmitem-nolab fmitem-btn">

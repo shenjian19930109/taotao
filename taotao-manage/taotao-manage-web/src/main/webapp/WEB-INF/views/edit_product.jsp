@@ -64,10 +64,74 @@
     }
 
     function display_img() {
-
-        /*alert($("#imgAddr").val());*/
         $("#avatarShow").attr("src", $("#imgAddr").val());
+    }
 
+    $(function () {
+        $("#title").blur(function(){
+            var $parent = $(this).parent();
+            $parent.find(".msg").remove(); //删除以前的提醒元素（find()：查找匹配元素集中元素的所有匹配元素）
+            var titleLen = $("#title").val().trim().length;
+            if(titleLen<2 || titleLen>50){
+                var errorMsg = " 长度错误！";
+                $parent.append("<span class='msg onError' style='color:#F00'>" + errorMsg + "</span>");
+            }
+        })
+        $("#summary").blur(function(){
+            var $parent = $(this).parent();
+            $parent.find(".msg").remove(); //删除以前的提醒元素（find()：查找匹配元素集中元素的所有匹配元素）
+            var titleLen = $("#summary").val().trim().length;
+            if(titleLen<2 || titleLen>140){
+                var errorMsg = " 长度错误！";
+                $parent.append("<span class='msg onError' style='color:#F00'>" + errorMsg + "</span>");
+            }
+        })
+        $("#detail").blur(function(){
+            var $parent = $(this).parent();
+            $parent.find(".msg").remove(); //删除以前的提醒元素（find()：查找匹配元素集中元素的所有匹配元素）
+            var titleLen = $("#detail").val().trim().length;
+            if(titleLen<2 || titleLen>1000){
+                var errorMsg = " 长度错误！";
+                $parent.append("<span class='msg onError' style='color:#F00'>" + errorMsg + "</span>");
+            }
+        })
+        $("#price").blur(function(){
+            var $parent = $(this).parent();
+            $parent.find(".msg").remove(); //删除以前的提醒元素（find()：查找匹配元素集中元素的所有匹配元素）
+            var price = $("#price").val().trim();
+            if(!$.isNumeric(price)){
+                var errorMsg = " 类型错误！";
+                $parent.append("<span class='msg onError' style='color:#F00'>" + errorMsg + "</span>");
+            }
+        })
+    })
+
+    function confirm(){
+        /*校验标题\摘要\正文的长度,不正确则不能提交*/
+        if($("#title").val().length < 2){
+            $("#title").focus();
+            return false;
+        }else if($("#title").val().length > 80){
+            $("#title").focus();
+            return false;
+        }else if($("#summary").val().length < 2){
+            $("#summary").focus();
+            return false;
+        }else if($("#summary").val().length > 140){
+            $("#summary").focus();
+            return false;
+        }else if($("#detail").val().length < 2){
+            $("#detail").focus();
+            return false;
+        }else if($("#detail").val().length > 1000){
+            $("#detail").focus();
+            return false;
+        }else if(!$.isNumeric($("#price").val().trim())){
+            $("#price").focus();
+            return false;
+        }else {
+            return true;
+        }
     }
 
 </script>
@@ -100,17 +164,17 @@
         <h2>内容编辑</h2>
     </div>
     <div class="n-public">
-        <form class="m-form m-form-ht" id="form" method="post" action="${pageContext.request.contextPath}/rest/seller/editSubmit?productId=${sessionScope.productId}" ><%--onsubmit="return false;" autocomplete="off"--%>
+        <form class="m-form m-form-ht" id="form" method="post" action="${pageContext.request.contextPath}/rest/seller/editSubmit?productId=${sessionScope.productId}"  onSubmit="return confirm();" ><%--onsubmit="return false;" autocomplete="off"--%>
             <div class="fmitem">
                 <label class="fmlab">标题：</label>
                 <div class="fmipt">
-                    <input class="u-ipt ipt" name="title" value="${sessionScope.productVO.title}"/>
+                    <input id="title" class="u-ipt ipt" name="title" value="${sessionScope.productVO.title}"/>
                 </div>
             </div>
             <div class="fmitem">
                 <label class="fmlab">摘要：</label>
                 <div class="fmipt">
-                    <input class="u-ipt ipt" name="summary" value="${sessionScope.productVO.summary}"/>
+                    <input id="summary" class="u-ipt ipt" name="summary" value="${sessionScope.productVO.summary}"/>
                 </div>
             </div>
             <div class="fmitem">
@@ -134,13 +198,13 @@
             <div class="fmitem">
                 <label class="fmlab">正文：</label>
                 <div class="fmipt">
-                    <textarea class="u-ipt" name="detail" rows="10" >${sessionScope.productVO.detail}</textarea>
+                    <textarea id="detail" class="u-ipt" name="detail" rows="10" >${sessionScope.productVO.detail}</textarea>
                 </div>
             </div>
             <div class="fmitem">
                 <label class="fmlab">价格：</label>
                 <div class="fmipt">
-                    <input class="u-ipt price" name="price"  value="${sessionScope.productVO.price}"/>元
+                    <input id="price" class="u-ipt price" name="price"  value="${sessionScope.productVO.price}"/>元
                 </div>
             </div>
             <div class="fmitem fmitem-nolab fmitem-btn">
