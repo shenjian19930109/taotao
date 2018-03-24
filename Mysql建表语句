@@ -1,0 +1,139 @@
+show session variables like '%sql_mode%';
+
+set sql_mode="ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION";
+
+use taotao;
+
+CREATE TABLE `tb_user_login` (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `username` VARCHAR(45) NOT NULL DEFAULT '' COMMENT '用户名称',
+	`password` VARCHAR(45) NOT NULL DEFAULT '' COMMENT '密码',
+    `status` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '状态',
+    `create_time` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
+    `modify_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+    PRIMARY KEY (`id`),
+    KEY `username_password_status_idx` (`username` , `password`, `status`)
+)  ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8 COMMENT='用户登录表'
+
+alter table `tb_user_login` add column `role_type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '角色类型' after `password`;
+
+insert into tb_user_login(username,password,role_type) values('buyer','reyub',0);
+
+use taotao;
+
+update tb_user_login set create_time='2018-03-03 16:54:42' where username='buyer';
+
+
+insert into tb_user_login(username,password,role_type,create_time) values('seller', 'relles', 1, now());
+
+use taotao;
+update tb_user_login set password='37254660e226ea65ce6f1efd54233424' where id=1;
+
+update tb_user_login set password='981c57a5cfb0f868e064904b8745766f' where id=2;
+
+--------------------------------------------------------
+
+
+use taotao;
+
+
+CREATE TABLE `tb_product` (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `title` VARCHAR(80) NOT NULL DEFAULT '' COMMENT '主题',
+	`summary` VARCHAR(140) NOT NULL DEFAULT '' COMMENT '摘要',
+    `pic` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '单选项:图片地址(url),本地上传(file)',
+    `image` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '图片地址',
+    `file` VARCHAR(60) NOT NULL DEFAULT '' COMMENT '文件名',
+    `avatar` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '本地上传文件地址',
+    `detail` VARCHAR(1000) NOT NULL DEFAULT '' COMMENT '正文',
+    `price` decimal(10,2) NOT NULL DEFAULT '0' COMMENT '价格',
+    `status` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '状态',
+    `create_time` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
+    `modify_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+    PRIMARY KEY (`id`),
+    KEY `title_price_idx` (`title` , `price`),
+    KEY `summary_price_idx` (`summary` , `price`)
+)  ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8 COMMENT='商品表'
+
+alter table tb_product modify column `file` VARCHAR(255);
+
+--------------------------------------------------------
+
+
+
+use taotao;
+
+
+CREATE TABLE `tb_seller_product` (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+	`user_id` BIGINT(20) NOT NULL DEFAULT '0' COMMENT '用户id',
+	`username` VARCHAR(45) NOT NULL DEFAULT '' COMMENT '用户名',
+	`product_id` BIGINT(20) NOT NULL DEFAULT '0' COMMENT '商品id',
+    `sold` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '是否已被购买，是：1；否：0',
+	`sold_num` INT(1) NOT NULL DEFAULT '0' COMMENT '该商品被购买数量',
+    `status` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '状态，有效：0；无效：1',
+    `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `modify_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+    PRIMARY KEY (`id`),
+    KEY `user_id_product_id_status_idx` (`user_id` , `product_id`, `status`)
+)  ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8 COMMENT='卖家商品表（发布表）'
+
+
+--------------------------------------------------------
+
+
+use taotao;
+
+
+CREATE TABLE `tb_buyer_product` (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+	`user_id` BIGINT(20) NOT NULL DEFAULT '0' COMMENT '用户id',
+	`username` VARCHAR(45) NOT NULL DEFAULT '' COMMENT '用户名',
+	`product_id` BIGINT(20) NOT NULL DEFAULT '0' COMMENT '商品id',
+    `sold` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '是否已被该买家购买，是：1；否：0',
+	`sold_num` INT(1) NOT NULL DEFAULT '0' COMMENT '该商品被该买家购买数量',
+    `status` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '状态，有效：0；无效：1',
+    `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `modify_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+    PRIMARY KEY (`id`),
+    KEY `user_id_product_id_status_idx` (`user_id` , `product_id`, `status`)
+)  ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8 COMMENT='买家商品表（购买表）'
+
+
+alter table tb_buyer_product add column `final_price` decimal(10,2) NOT NULL DEFAULT '0' COMMENT '成交价格' after `sold_num`;
+
+
+--------------------------------------------------------
+
+
+use taotao;
+
+CREATE TABLE `tb_shopping_car` (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `user_id` BIGINT(20) NOT NULL DEFAULT '0' COMMENT '用户id',
+	`username` VARCHAR(45) NOT NULL DEFAULT '' COMMENT '用户名',
+	`product_id` BIGINT(20) NOT NULL DEFAULT '0' COMMENT '商品id',
+    `title` VARCHAR(45) NOT NULL DEFAULT '' COMMENT '商品主题',
+    `purchase_num` INT(1) NOT NULL DEFAULT '0' COMMENT '准备购买该商品数量',
+    `price` decimal(10,2) NOT NULL DEFAULT '0' COMMENT '价格',
+    `bought` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '是否已被该买家购买，是：1；否：0',
+    `status` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '状态',
+    `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `modify_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+    PRIMARY KEY (`id`),
+    KEY `user_id_product_id_idx` (`user_id` , `product_id`),
+    KEY `username_product_id_idx` (`username` , `product_id`)
+)  ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8 COMMENT='购物车表'
+
+
+
+
+
+
+
+
+
+
+
+
+
